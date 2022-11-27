@@ -6,35 +6,44 @@
 
 using std::vector;
 
-namespace Decoder {
+namespace decoder {
 
-    namespace Wheel {
+    namespace wheel {
 
         template<class T>
         struct Node {
             T value;
-            struct Node<T> parent;
-            vector< struct Node<T> > children;
+            struct Node<T>* parent;
+            vector< struct Node<T> >* children;
         };
 
-        struct Attributes {};
+        struct Attributes {
+            bool isStart;
+            bool isEnd;
+            int idRangeStart;
+            int idRangeStop;
+        };
 
         template<class T>
         struct OriginNode {
-            vector< struct Node<T> > children;
+            vector< struct Node<T>* > children;
         };
 
         template<class T>
         struct ResultNode {
             T value;
             struct Attributes* attr;
-            vector<struct Node<T> > parents;
         };
 
         template<class T>
         struct FinalNode {
-            struct ResultNode<T> result;
-            struct Node<T> parent;
+            struct ResultNode<T>* result;
+            struct Node<T>* parent;
+        };
+
+        template<class T>
+        struct Layer {
+            vector< struct Node<T>* > nodes;
         };
     }
 

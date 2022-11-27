@@ -7,32 +7,29 @@
 
 #include "WheelTypes.hpp"
 
-#include "json.hpp"
+#include <nlohmann/json.hpp>
 
-namespace Decoder {
-    namespace Wheel {
-        template<class T>
+namespace decoder {
+    namespace wheel {
         class Wheel {
             private:
 
-                unsigned int layers;
-                unsigned int results;
+                unsigned int layersAmount;
+                unsigned int resultsAmount;
 
                 vector<Layer<char> > layers;
+                vector<ResultNode <char> > results;
 
                 std::ifstream* wheelRep;
 
-
             public:
-                Wheel(std::string filepath);
+                Wheel(const std::string& filepath);
                 ~Wheel();
 
+                void ParseWheelFile(const std::string& filepath);
 
-                char getCompound(string seq);
-                struct ResultNode<char> getCompoundBody(string seq);
-
-
-
+                char GetCompound(const std::string& seq);
+                struct ResultNode<char> GetCompoundBody(const std::string& seq);
 
         };
     }

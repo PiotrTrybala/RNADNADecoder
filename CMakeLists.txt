@@ -6,8 +6,12 @@ set(CMAKE_CXX_CLANG_TIDY "clang-tidy")
 
 include (scripts/clang-format.cmake)
 
+include_directories(${PROJECT_SOURCE_DIR}/lib/json/include/)
+
 set(SOURCES
     main.cpp
+    engine/WheelTypes.cpp
+    engine/Wheel.cpp
 )
 
 list(TRANSFORM SOURCES PREPEND ${PROJECT_SOURCE_DIR}/src/)
