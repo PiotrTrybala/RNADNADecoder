@@ -10,8 +10,6 @@
 #include "EngineTypes.hpp"
 
 using nlohmann::json;
-using decoder::engine::types::compound;
-using decoder::engine::types::compound_schema;
 
 namespace decoder
 {

@@ -1,7 +1,6 @@
 #include "CompoundBase.hpp"
+#include "EngineTypes.hpp"
 #include <vector>
-
-using decoder::engine::types::DecoderResult;
 
 namespace decoder {
 
@@ -17,7 +16,7 @@ namespace decoder {
                 ~DecoderEngine();
 
 
-                std::vector<struct DecoderResult> GetResults(const struct DecoderInput&& input);
+                std::vector<struct DecoderResult> GetResults(struct DecoderInput input);
                 struct DecoderResult& GetPatrialResult(const struct DecoderInput&& input);
                 std::string ToString(const struct DecoderResult&& result);
         };

@@ -6,8 +6,6 @@ namespace decoder
     namespace engine
     {
 
-        using types::DecoderInput;
-        using types::DecoderResult;
 
         DecoderEngine::DecoderEngine()
         {
@@ -18,7 +16,7 @@ namespace decoder
             delete base;
         }
 
-        std::vector<struct DecoderResult> DecoderEngine::GetResults(const struct DecoderInput&& input) {
+        std::vector<struct DecoderResult> DecoderEngine::GetResults(struct DecoderInput input) {
             std::vector<struct DecoderResult> results;
             int inputLength = input.input.length();
             int totalLength = (int)(inputLength / 3) * 3;

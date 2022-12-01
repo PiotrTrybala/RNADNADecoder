@@ -1,8 +1,5 @@
 #include "CompoundBase.hpp"
 #include <iostream>
-
-using decoder::engine::types::compound;
-
 namespace decoder
 {
     namespace engine
@@ -30,7 +27,7 @@ namespace decoder
                 compound.schema = makeCompoundSchema(start["schema"].get<std::string>());
                 start_compound = compound;
 
-                this->compoundSymbolLookup.insert({compound.schema.const_part, compound}); // TODO: fix and add variadic part to add
+                this->compoundSymbolLookup.insert({compound.schema.const_part, compound}); // TODO(piotrek): fix and add variadic part to add
             }
             json stopppingCompounds = specialCompounds["stop"];
             for (auto stop : stopppingCompounds) {
