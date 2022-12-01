@@ -1,15 +1,16 @@
 #include <iostream>
-#include "engine/Wheel.hpp"
+#include "engine/CompoundBase.hpp"
 
-using std::cout;
-using std::string;
-using decoder::wheel::Wheel;
+using decoder::engine::CompoundBase;
 
 auto main() -> int {
-    cout << "Hello World!" << "\n";
 
-    auto* wheel = new Wheel("../wheel/wheel.json");
-    delete wheel;
+    CompoundBase* base = new CompoundBase(std::move("../schema/schema.json"));
+
+    std::cout << base->getSymbol(std::move("UUU")) << "\n"; // Phe F
+    std::cout << base->getSymbol(std::move("UAC")) << "\n"; // Tyr Y
+    std::cout << base->getSymbol(std::move("AUG")) << "\n"; // M(start)
+    std::cout << base->getSymbol(std::move("GGG")) << "\n"; // Gly G
 
     return 0;
 }
