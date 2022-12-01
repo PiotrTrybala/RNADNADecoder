@@ -10,14 +10,17 @@
         ],
         "stop": [
             {
+                "name": "",
                 "symbol": "(stop)",
                 "schema": "UAA"
             },
             {
+                "name": "",
                 "symbol": "(stop)",
                 "schema": "UAG"
             },
             {
+                "name": "",
                 "symbol": "(stop)",
                 "schema": "UGG"
             }
