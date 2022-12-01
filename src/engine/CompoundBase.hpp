@@ -22,14 +22,16 @@ namespace decoder
         private:
 
             struct compound start_compound;
-            std::vector<struct compund> stop_compound;
+            std::vector<struct compound> stop_compound;
 
             const struct compund& getCompoundBySequence(const std::string& seq);
-            struct compound_schema& makeCompoundSchema(const std::string& raw_schema);
+            struct compound_schema& makeCompoundSchema(const std::string&& raw_schema);
 
-            std::ifstream* compoundSchema;
+            void ParseSchemaJSONFile();
 
-            std::unordered_map<std::string, std::string> compoundSymbolLookup;
+            std::ifstream* compoundSchemaStream;
+
+            std::unordered_map<std::string, struct compound> compoundSymbolLookup;
 
         public:
 
