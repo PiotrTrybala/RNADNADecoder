@@ -1,4 +1,5 @@
 #include "CompoundBase.hpp"
+#include <iostream>
 
 namespace decoder
 {
@@ -7,7 +8,7 @@ namespace decoder
 
         CompoundBase::CompoundBase(const std::string &filepath)
         {
-            this->compoundSchemaStream = new std::ifstream(std::move(filepath));
+            this->compoundSchemaStream = new std::ifstream(filepath);
             this->ParseSchemaJSONFile();
         }
         CompoundBase::~CompoundBase()
@@ -17,64 +18,102 @@ namespace decoder
         }
 
         void CompoundBase::ParseSchemaJSONFile() {
+            std::cout << "parsing 1\n";
             json allSchema = json::parse(*this->compoundSchemaStream);
+            std::cout << "parsing 2\n";
             json specialCompounds = allSchema["special"];
             json startingCompounds = specialCompounds["start"];
+            std::cout << "parsing 3\n";
             for (auto start : startingCompounds) {
                 struct compound compound;
                 compound.name = start["name"].get<std::string>();
                 compound.symbol = start["symbol"].get<std::string>();
                 compound.schema = makeCompoundSchema(start["schema"].get<std::string>());
+                start_compound = compound;
+                std::cout << "parsing 4\n";
+
+
+
+                this->compoundSymbolLookup.insert({compound.schema.const_part, compound}); // TODO: fix and add variadic part to add
             }
+            std::cout << "parsing 5\n";
             json stopppingCompounds = specialCompounds["stop"];
+            std::cout << "parsing 6\n";
             for (auto stop : stopppingCompounds) {
+                std::cout << "parsing 7\n";
                 struct compound compound;
                 compound.name = stop["name"].get<std::string>();
                 compound.symbol = stop["symbol"].get<std::string>();
                 compound.schema = makeCompoundSchema(stop["schema"].get<std::string>());
 
-                stop_compound.push_back(compound);
+                for (const std::string& c : compound.schema.variadic_part) {
+                    this->compoundSymbolLookup.insert({compound.schema.const_part + c, compound});
+                }
+
+                stop_compound.emplace_back(compound);
             }
+            std::cout << "parsing 8\n";
             json restCompounds = allSchema["compounds"];
+            std::cout << "parsing 9\n";
             for (auto comp : restCompounds) {
+                std::cout << "parsing 10\n";
                 struct compound compound;
                 compound.name = comp["name"].get<std::string>();
                 compound.symbol = comp["symbol"].get<std::string>();
                 compound.schema = makeCompoundSchema(comp["schema"].get<std::string>());
-                for (std::string c : compound.schema.variadic_part) {
-                    this->compoundSymbolLookup.insert({compound.schema.const_part + c, compound});
+
+                for (int i = 0; i < compound.schema.variadic_part.size(); i++) {
+                    std::cout << "parsing 11\n";
+                    std::string lookup {compound.schema.const_part};
+                    lookup += compound.schema.variadic_part[i];
+                    this->compoundSymbolLookup.insert({lookup, compound});
                 }
             }
 
         }
 
-        struct compound_schema& CompoundBase::makeCompoundSchema(const std::string&& raw_schema) {
-            std::string raw = std::move(raw_schema);
+        auto CompoundBase::makeCompoundSchema(const std::string&& raw_schema) -> struct compound_schema {
+            std::cout << "make 1\n";
             struct compound_schema schema;
-            char schemaElem;
             int i = 0;
-            while((schemaElem = raw[i]) != '[') {
-                schema.const_part += schemaElem;
+            while(raw_schema[i] != '[' && i < raw_schema.length()) {
+                std::cout << i << "1: " << raw_schema[i] << "\n";
+                schema.const_part += raw_schema[i];
                 i++;
             }
-            while((schemaElem = raw[i]) != ']') {
-                schema.variadic_part.push_back("" + schemaElem);
+            i++;
+            while(raw_schema[i] != ']' && i < raw_schema.length()) {
+                std::cout << i << "2: " << raw_schema[i] << "\n";
+                std::string variadic {raw_schema[i]};
+                schema.variadic_part.emplace_back(variadic);
+                i++;
             }
+
+            std::cout << "schema const part: " << schema.const_part << "\n";
+            for (int i = 0; i < schema.variadic_part.size(); i++) {
+                std::cout << "variadic index part " << i << ": " << schema.variadic_part[i] << "\n";
+            }
+
             return schema;
         }
 
-        const std::string &CompoundBase::getCompoundName(const std::string &seq)
+        auto CompoundBase::getCompoundName(const std::string &seq) -> const std::string&
         {
         }
-        const std::string &CompoundBase::getCompoundSymbol(const std::string &seq)
+        auto CompoundBase::getCompoundSymbol(const std::string &seq) -> const std::string&
         {
         }
-        const struct compound_schema &CompoundBase::getCompoundSchema(const std::string &seq)
+        auto CompoundBase::getCompoundSchema(const std::string &seq) -> const struct compound_schema&
         {
         }
 
-        const std::string &CompoundBase::getSymbol(const std::string &seq)
+        auto CompoundBase::getSymbol(const std::string &seq) -> std::string
         {
+            if (this->compoundSymbolLookup.find(seq) == compoundSymbolLookup.end()) {
+                std::string error {"error"};
+                return error;
+            }
+            return this->compoundSymbolLookup[seq].symbol;
         }
 
     }

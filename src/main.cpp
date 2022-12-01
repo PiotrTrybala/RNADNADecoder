@@ -1,12 +1,16 @@
-#include "Application.hpp"
+#include <iostream>
+#include "engine/CompoundBase.hpp"
 
-class MyApplication : public decoder::Application {
-    public:
-        void run() override {
-            std::cout << "Hello World!\n";
-        }
-};
+using decoder::engine::CompoundBase;
 
-decoder::Application* CreateApplication() {
-    return new MyApplication();
+auto main() -> int {
+
+    CompoundBase* base = new CompoundBase(std::move("../schema/schema.json"));
+
+    std::cout << base->getSymbol(std::move("UUU")) << "\n"; // Phe F
+    std::cout << base->getSymbol(std::move("UAC")) << "\n"; // Tyr Y
+    std::cout << base->getSymbol(std::move("AUG")) << "\n"; // M(start)
+    std::cout << base->getSymbol(std::move("GGG")) << "\n"; // Gly G
+
+    return 0;
 }

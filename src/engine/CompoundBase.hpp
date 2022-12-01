@@ -25,7 +25,7 @@ namespace decoder
             std::vector<struct compound> stop_compound;
 
             const struct compund& getCompoundBySequence(const std::string& seq);
-            struct compound_schema& makeCompoundSchema(const std::string&& raw_schema);
+            struct compound_schema makeCompoundSchema(const std::string&& raw_schema);
 
             void ParseSchemaJSONFile();
 
@@ -42,7 +42,7 @@ namespace decoder
             const std::string& getCompoundSymbol(const std::string& seq);
             const struct compound_schema& getCompoundSchema(const std::string& seq);
 
-            const std::string& getSymbol(const std::string& seq);
+            std::string getSymbol(const std::string& seq);
 
         };
     }
