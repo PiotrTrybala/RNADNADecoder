@@ -29,6 +29,10 @@ namespace decoder
                 std::string result;
             };
 
+            struct DecoderInput {
+                std::string input;
+            };
+
         }
     }
 }
