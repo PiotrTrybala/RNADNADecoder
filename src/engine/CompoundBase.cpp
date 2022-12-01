@@ -48,6 +48,21 @@ namespace decoder
 
         }
 
+        struct compound_schema& CompoundBase::makeCompoundSchema(const std::string&& raw_schema) {
+            std::string raw = std::move(raw_schema);
+            struct compound_schema schema;
+            char schemaElem;
+            int i = 0;
+            while((schemaElem = raw[i]) != '[') {
+                schema.const_part += schemaElem;
+                i++;
+            }
+            while((schemaElem = raw[i]) != ']') {
+                schema.variadic_part.push_back("" + schemaElem);
+            }
+            return schema;
+        }
+
         const std::string &CompoundBase::getCompoundName(const std::string &seq)
         {
         }
