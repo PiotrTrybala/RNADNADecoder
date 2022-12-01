@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 
 namespace decoder {
@@ -7,7 +8,7 @@ namespace decoder {
         private:
         public:
 
-            void run();
+            virtual void run() = 0;
 
     };
 

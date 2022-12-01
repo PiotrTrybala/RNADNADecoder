@@ -10,8 +10,8 @@ include_directories(${PROJECT_SOURCE_DIR}/lib/json/include/)
 
 set(SOURCES
     main.cpp
-    engine/WheelTypes.cpp
-    engine/Wheel.cpp
+    Entrypoint.cpp
+    Application.cpp
 )
 
 list(TRANSFORM SOURCES PREPEND ${PROJECT_SOURCE_DIR}/src/)

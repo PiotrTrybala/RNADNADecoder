@@ -2,6 +2,5 @@
 
 namespace decoder {
 
-    void Applicat
 
 }
