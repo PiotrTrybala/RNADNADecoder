@@ -4,29 +4,28 @@
         "start": [
             {
             "name": "Mel",
-            "symbol": "M",
+            "symbol": "M_",
             "schema": "AUG"
             }
         ],
         "stop": [
             {
                 "name": "",
-                "symbol": "(stop)",
+                "symbol": "*",
                 "schema": "UAA"
             },
             {
                 "name": "",
-                "symbol": "(stop)",
+                "symbol": "*",
                 "schema": "UAG"
             },
             {
                 "name": "",
-                "symbol": "(stop)",
-                "schema": "UGG"
+                "symbol": "*",
+                "schema": "UGA"
             }
         ]
     },
-
     "compounds": [
         {
             "name": "Phe",
@@ -56,11 +55,8 @@
         {
             "name": "Trp",
             "symbol": "W",
-            "schema": "UG[G]"
+            "schema": "UG[AG]"
         },
-
-
-
         {
             "name": "Leu",
             "symbol": "L",
@@ -86,9 +82,31 @@
             "symbol": "R",
             "schema": "CG[UCAG]"
         },
-
-
-
+        {
+            "name": "Ile",
+            "symbol": "I",
+            "schema": "AU[UCA]"
+        },
+        {
+            "name": "Asn",
+            "symbol": "N",
+            "schema": "AA[UC]"
+        },
+        {
+            "name": "Thr",
+            "symbol": "T",
+            "schema": "AC[UCAG]"
+        },
+        {
+            "name": "Lys",
+            "symbol": "K",
+            "schema": "AA[AG]"
+        },
+        {
+            "name": "Arg",
+            "symbol": "R",
+            "schema": "AG[AG]"
+        },
         {
             "name": "Val",
             "symbol": "V",

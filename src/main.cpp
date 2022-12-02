@@ -1,16 +1,18 @@
 #include <iostream>
-#include "engine/CompoundBase.hpp"
+#include "engine/DecoderEngine.hpp"
+#include "engine/EngineTypes.hpp"
 
-using decoder::engine::CompoundBase;
+using namespace decoder::engine;
 
 auto main() -> int {
-
-    CompoundBase* base = new CompoundBase(std::move("../schema/schema.json"));
-
-    std::cout << base->getSymbol(std::move("UUU")) << "\n"; // Phe F
-    std::cout << base->getSymbol(std::move("UAC")) << "\n"; // Tyr Y
-    std::cout << base->getSymbol(std::move("AUG")) << "\n"; // M(start)
-    std::cout << base->getSymbol(std::move("GGG")) << "\n"; // Gly G
-
+    auto* engine = new DecoderEngine();
+    struct DecoderInput input = {
+        .input = "AAAUGAACGAAAAUCUGUUCGCUUCAUUCAUUGCCCCCACAAUCCUAGGCCUACCC"
+    };
+    std::vector<struct DecoderResult> results = engine->GetResults(input);
+    // for (int i = 0; i < 3; i++) {
+    //     std::cout << "#" << (i + 1) << ": " << results[i].result << "\n";
+    // }
+    delete engine;
     return 0;
 }

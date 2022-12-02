@@ -32,16 +32,15 @@ namespace decoder
             json stopppingCompounds = specialCompounds["stop"];
             for (auto stop : stopppingCompounds) {
                 struct compound compound;
+
                 compound.name = stop["name"].get<std::string>();
                 compound.symbol = stop["symbol"].get<std::string>();
                 compound.schema = makeCompoundSchema(stop["schema"].get<std::string>());
 
-                for (const std::string& c : compound.schema.variadic_part) {
-                    this->compoundSymbolLookup.insert({compound.schema.const_part + c, compound});
-                }
-
+                this->compoundSymbolLookup[compound.schema.const_part] = compound;
                 stop_compound.emplace_back(compound);
             }
+
             json restCompounds = allSchema["compounds"];
             for (auto comp : restCompounds) {
                 struct compound compound;
@@ -55,7 +54,6 @@ namespace decoder
                     this->compoundSymbolLookup.insert({lookup, compound});
                 }
             }
-
         }
 
         auto CompoundBase::makeCompoundSchema(const std::string&& raw_schema) -> struct compound_schema {
@@ -71,12 +69,6 @@ namespace decoder
                 schema.variadic_part.emplace_back(variadic);
                 i++;
             }
-
-            std::cout << "schema const part: " << schema.const_part << "\n";
-            for (int i = 0; i < schema.variadic_part.size(); i++) {
-                std::cout << "variadic index part " << i << ": " << schema.variadic_part[i] << "\n";
-            }
-
             return schema;
         }
 
@@ -93,7 +85,7 @@ namespace decoder
         auto CompoundBase::getSymbol(const std::string &seq) -> std::string
         {
             if (this->compoundSymbolLookup.find(seq) == compoundSymbolLookup.end()) {
-                std::string error {"error"};
+                std::string error {""};
                 return error;
             }
             return this->compoundSymbolLookup[seq].symbol;

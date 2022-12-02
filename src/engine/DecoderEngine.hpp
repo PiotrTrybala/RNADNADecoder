@@ -13,7 +13,12 @@ namespace decoder {
                 ~DecoderEngine();
 
                 std::vector<struct DecoderResult> GetResults(struct DecoderInput input);
-                struct DecoderResult GetPatrialResult(const struct DecoderInput&& input);
+                struct DecoderResult GetPatrialResult(const struct DecoderInput input);
+
+                struct DecoderResult PostProcessResult(const struct DecoderResult result);
+
+                bool isTrailingSequence(const std::string seq);
+
                 std::string ToString(const struct DecoderResult&& result);
         };
     }

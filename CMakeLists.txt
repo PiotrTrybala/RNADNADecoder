@@ -12,6 +12,7 @@ include_directories(${PROJECT_SOURCE_DIR}/lib/json/include/)
 set(SOURCES
     main.cpp
     engine/CompoundBase.cpp
+    engine/DecoderEngine.cpp
 )
 
 list(TRANSFORM SOURCES PREPEND ${PROJECT_SOURCE_DIR}/src/)
