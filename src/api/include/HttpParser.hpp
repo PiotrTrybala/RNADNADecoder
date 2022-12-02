@@ -1,12 +1,14 @@
 
+#include <string>
+#include "HttpUtils.hpp"
+#include "HttpTypes.hpp"
+
 namespace decoder {
-
     namespace http {
-
-
         class Parser {
-            private:
             public:
+                static struct http_request& ParseRequest(const std::string& req);
+                static std::string& PrepareResponse(const struct http_response& res);
         };
 
 
