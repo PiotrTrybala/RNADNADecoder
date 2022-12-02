@@ -7,7 +7,7 @@ namespace decoder {
         class Parser {
             private:
             public:
-        }
+        };
 
 
     }
