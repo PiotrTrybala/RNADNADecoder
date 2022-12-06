@@ -27,7 +27,7 @@ namespace decoder {
 
             if (request.method != RequestMethod::GET) http_body = http_lines[http_lines.size() - 1];
 
-            std::cout << http_body << std::endl;
+
 
 
 

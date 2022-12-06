@@ -54,6 +54,17 @@ namespace decoder {
             MINFRESH
         };
 
+        enum class AuthScheme {
+            BASIC,
+            BEARER,
+            DIGEST
+        };
+
+        struct Authorization {
+            enum AuthScheme scheme;
+            std::string authParams;
+        };
+
         struct http_request {
 
             enum RequestMethod method;
@@ -65,6 +76,7 @@ namespace decoder {
             std::vector<enum AcceptTypes> accepts;
             std::vector<enum CharsetTypes> charsets;
             std::vector<enum AcceptLanguage> languages;
+            struct Authorization auth;
 
             int keepAlive;
             enum ConnectionState connection;
