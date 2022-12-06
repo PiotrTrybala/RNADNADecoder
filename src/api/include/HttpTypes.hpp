@@ -78,6 +78,8 @@ namespace decoder {
             std::vector<enum AcceptLanguage> languages;
             struct Authorization auth;
 
+            int contentLength;
+
             int keepAlive;
             enum ConnectionState connection;
             std::string trailing = "\r\n";

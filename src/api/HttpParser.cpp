@@ -27,11 +27,49 @@ namespace decoder {
 
             if (request.method != RequestMethod::GET) http_body = http_lines[http_lines.size() - 1];
 
+            for (int i = 1; i < http_lines.size() - (request.method != RequestMethod::GET ? 1 : 0); i++) {
 
+                std::vector<std::string> line = Utils::split(http_lines[i], ": ");
+                for (auto& l : line) l = Utils::trim(l);
 
+                std::string header_name = line[0];
+                std::string header_value = line[1];
 
+                if (header_name == "Accepts") {
 
+                    if (header_value == "application/json")  {
+                        request.accepts.push_back(AcceptTypes::APPLICATIONJSON);
+                    } else if (header_value == "text/xml") {
+                        request.accepts.push_back(AcceptTypes::TEXTXML);
+                    }
+                    continue;
+                }
 
+                if (header_name == "Host") {
+                    request.host = header_value;
+                    continue;
+                }
+
+                if (header_name == "User-Agent") {
+                    request.user_agent = header_value;
+                    continue;
+                }
+
+                if (header_name == "Connection") {
+                    if (header_value == "Keep-Alive") {
+                        request.connection = ConnectionState::KEEPALIVE;
+                    } else if (header_value == "Close") {
+                        request.connection = ConnectionState::CLOSE;
+                    }
+                    continue;
+                }
+
+                if (header_name == "Content-Length") {
+                    request.contentLength = atoi(header_value.c_str());
+                    continue;
+                }
+
+            }
             return request;
         }
         auto Parser::PrepareResponse(struct http_response& res) -> std::string& {
