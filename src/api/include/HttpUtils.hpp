@@ -10,7 +10,7 @@ namespace decoder {
 
             public:
                 static std::string trim(const std::string& s);
-                static std::vector<std::string> split(std::string& s, std::string& delim);
+                static std::vector<std::string> split(std::string& s, std::string delim);
         };
 
     }
