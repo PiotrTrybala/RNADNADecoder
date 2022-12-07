@@ -9,10 +9,14 @@ set(CMAKE_BUILD_TYPE Debug)
 
 include_directories(${PROJECT_SOURCE_DIR}/lib/json/include/)
 
+add_subdirectory(${PROJECT_SOURCE_DIR}/lib/doctest)
+
 set(SOURCES
     main.cpp
     engine/CompoundBase.cpp
     engine/DecoderEngine.cpp
+    api/HttpUtils.cpp
+    api/HttpParser.cpp
 )
 
 list(TRANSFORM SOURCES PREPEND ${PROJECT_SOURCE_DIR}/src/)
