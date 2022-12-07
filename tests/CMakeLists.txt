@@ -10,4 +10,6 @@ endif()
 
 project(${TestName} VERSION 0.0.1)
 
+include_directories(./../src/api/include/)
+
 add_executable(${TestName} ${TestName}.cpp)

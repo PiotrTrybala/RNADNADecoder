@@ -74,12 +74,15 @@ namespace decoder
 
         auto CompoundBase::getCompoundName(const std::string &seq) -> const std::string&
         {
+            return this->compoundSymbolLookup[seq].name;
         }
         auto CompoundBase::getCompoundSymbol(const std::string &seq) -> const std::string&
         {
+            return this->compoundSymbolLookup[seq].symbol;
         }
         auto CompoundBase::getCompoundSchema(const std::string &seq) -> const struct compound_schema&
         {
+            return this->compoundSymbolLookup[seq].schema;
         }
 
         auto CompoundBase::getSymbol(const std::string &seq) -> std::string

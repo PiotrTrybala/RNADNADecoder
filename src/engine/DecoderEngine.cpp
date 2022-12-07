@@ -16,7 +16,7 @@ namespace decoder
 
 
         // TODO(piotrek): to be implemented
-        struct DecoderResult DecoderEngine::PostProcessResult(const struct DecoderResult result) {
+        auto DecoderEngine::PostProcessResult(const struct DecoderResult result) -> struct DecoderResult {
             struct DecoderResult postProcessResult;
 
             std::string res = result.result;
@@ -28,14 +28,14 @@ namespace decoder
         }
 
         // TODO(piotrek): to be implemented
-        bool DecoderEngine::isTrailingSequence(const std::string seq) {
+        auto DecoderEngine::isTrailingSequence(const std::string seq) -> bool {
             return false;
         }
 
-        std::vector<struct DecoderResult> DecoderEngine::GetResults(struct DecoderInput input) {
+        auto DecoderEngine::GetResults(struct DecoderInput input) -> std::vector<struct DecoderResult> {
             std::vector<struct DecoderResult> results;
             int inputLength = input.input.length();
-            int totalLength = (int)(inputLength / 3) * 3;
+            int totalLength = (inputLength / 3) * 3;
             bool extend = false;
             if (totalLength != inputLength) extend = true;
 
@@ -46,7 +46,7 @@ namespace decoder
                 };
 
                 std::cout << "#" << (i + 1) << ": ";
-                for (int i = 0; i < partialInput.input.length(); i += 2) {
+                for (int i = 0; i < partialInput.input.length(); i += 3) {
                     std::cout << partialInput.input.substr(i, 3) << " ";
                 }
                 std::cout << " | " << GetPatrialResult(partialInput).result << "\n";
@@ -57,7 +57,7 @@ namespace decoder
             }
             return results;
         }
-        struct DecoderResult DecoderEngine::GetPatrialResult(const struct DecoderInput input) {
+        auto DecoderEngine::GetPatrialResult(const struct DecoderInput input) -> struct DecoderResult {
             struct DecoderResult result;
             std::string output;
             std::string raw_input = input.input;
@@ -68,7 +68,7 @@ namespace decoder
             result.result = output;
             return result;
         }
-        std::string DecoderEngine::ToString(const struct DecoderResult&& result) {
+        auto DecoderEngine::ToString(const struct DecoderResult&& result) -> std::string {
             return result.result;
         }
     }
