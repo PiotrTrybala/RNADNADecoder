@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include "nlohmann/json.hpp"
 #include <vector>
 
 namespace decoder {
@@ -9,6 +10,7 @@ namespace decoder {
             OK = 200,
             NOTFOUND = 404,
             REDIRECT = 302,
+            MOVED = 301,
             INTERNALERROR = 501
         };
 
@@ -40,7 +42,7 @@ namespace decoder {
             KEEPALIVE
         };
 
-        enum class TransferEndodings {
+        enum class TransferEncodings {
             CHUNKED,
             IDENTITY,
             GZIP,
@@ -76,6 +78,7 @@ namespace decoder {
             std::vector<enum AcceptTypes> accepts;
             std::vector<enum CharsetTypes> charsets;
             std::vector<enum AcceptLanguage> languages;
+            enum TransferEncodings encoding;
             struct Authorization auth;
 
             int contentLength;
@@ -84,6 +87,8 @@ namespace decoder {
             enum ConnectionState connection;
             std::string trailing = "\r\n";
 
+            nlohmann::json js_body;
+            std::string url_encoded_body;
         };
 
         struct http_response {
@@ -91,6 +96,8 @@ namespace decoder {
             std::string version = "HTTP/1.1";
             enum ResponseCode code;
             std::string server;
+
+            std::string location;
 
             std::vector<enum CacheControls> cache;
 
