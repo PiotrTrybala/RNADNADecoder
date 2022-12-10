@@ -114,10 +114,39 @@ namespace decoder
                 request.js_body = nlohmann::json::parse(http_body);
             }
             return request;
-        } auto Parser::PrepareResponse(struct http_response &res) -> std::string &
+        }
+        auto Parser::PrepareResponse(struct http_response &res) -> std::string
         {
-            std::string response;
-            return response;
+            std::stringstream ss;
+
+            ss << res.version << " ";
+
+            if (res.code == ResponseCode::OK) {
+                ss << "200 OK";
+            } else if (res.code == ResponseCode::MOVED) {
+                ss << "301 Moved Permanently";
+            } else if (res.code == ResponseCode::INTERNALERROR) {
+                ss << "500 Internal Server Error";
+            } else if (res.code == ResponseCode::NOTFOUND) {
+                ss << "404 Not Found";
+            } else if (res.code == ResponseCode::REDIRECT) {
+                ss << "302 Found";
+            }
+            ss << res.trailing;
+
+            if (!res.server.empty()) ss << "Server: " << res.server << res.trailing;
+            if (!res.location.empty() && res.code == ResponseCode::MOVED) ss << "Location: " << res.location << res.trailing;
+            if (res.connection != ConnectionState::NONE) {
+                ss << "Connection: ";
+                if (res.connection == ConnectionState::CLOSE) {
+                    ss << "Close";
+                } else {
+                    ss << "Keep-Alive";
+                }
+            }
+            ss << res.trailing;
+            ss << res.trailing << res.body.dump();
+            return ss.str();
         }
     }
 }
