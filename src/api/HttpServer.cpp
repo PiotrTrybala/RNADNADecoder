@@ -5,6 +5,20 @@ namespace decoder
     namespace http
     {
 
+        void HttpServer::make_registry_entry(RequestMethod method, std::string endpoint, endpoint_func& func) {
+            struct endpoint_reg reg;
+            reg.method = method;
+            reg.endpoint = endpoint;
+            reg.func = &func;
+            for (auto& it : registry) {
+                if (it.endpoint == reg.endpoint && reg.method == it.method) {
+                    it.func = &func;
+                    return;
+                }
+            }
+            registry.push_back(reg);
+        }
+
         HttpServer::HttpServer(short port) : port(port)
         {
 
@@ -19,7 +33,6 @@ namespace decoder
         }
         HttpServer::~HttpServer()
         {
-            delete parser;
         }
         void HttpServer::request(std::string endpoint)
         {
