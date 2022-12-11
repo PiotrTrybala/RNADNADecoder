@@ -19,12 +19,9 @@ namespace decoder
             registry.push_back(reg);
         }
 
-        HttpServer::HttpServer(short port) : port(port)
+        HttpServer::HttpServer(short port) : port(port), server_acceptor(ios)
         {
 
-        }
-        HttpServer::HttpServer(const HttpServer &rhs)
-        {
         }
         HttpServer &HttpServer::operator=(const HttpServer &rhs)
         {
@@ -55,9 +52,11 @@ namespace decoder
         }
         void HttpServer::run()
         {
+            ios.run();
         }
         void HttpServer::stop()
         {
+            ios.stop();
         }
 
     }

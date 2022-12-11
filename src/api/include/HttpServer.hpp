@@ -25,6 +25,9 @@ namespace decoder {
 
                 void make_registry_entry(RequestMethod method, std::string endpoint, endpoint_func& func);
 
+                tcp::acceptor server_acceptor;
+                boost::asio::io_service ios;
+
 
             public:
 
