@@ -4,6 +4,7 @@
 #include <boost/bind.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/enable_shared_from_this.hpp>
+#include "TcpConnection.hpp"
 namespace decoder {
     namespace http {
         using boost::asio::ip::tcp;
@@ -27,6 +28,9 @@ namespace decoder {
 
                 tcp::acceptor server_acceptor;
                 boost::asio::io_service ios;
+
+                void handle_connection(TcpConnection::pointer new_connection, const boost::system::error_code& error);
+                void start_accept();
 
 
             public:
