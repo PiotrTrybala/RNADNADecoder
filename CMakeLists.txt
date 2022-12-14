@@ -11,6 +11,11 @@ include_directories(${PROJECT_SOURCE_DIR}/lib/json/include/)
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/doctest)
 
+message(STATUS ${Boost_LIBRARIES})
+
+find_package(Boost REQUIRED system)
+find_package(Threads REQUIRED)
+
 set(SOURCES
     main.cpp
     engine/CompoundBase.cpp
@@ -22,3 +27,7 @@ set(SOURCES
 list(TRANSFORM SOURCES PREPEND ${PROJECT_SOURCE_DIR}/src/)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
+
+
+target_include_directories(${PROJECT_NAME} PRIVATE ${Boost_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} PRIVATE ${Boost_LIBRARIES} Threads::Threads)

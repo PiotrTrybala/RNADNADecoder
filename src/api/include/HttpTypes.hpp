@@ -6,12 +6,15 @@
 namespace decoder {
     namespace http {
 
+        using endpoint_func = std::function<struct http_response(struct http_response&, struct http_request&)>;
+
         enum class ResponseCode {
             OK = 200,
             NOTFOUND = 404,
             REDIRECT = 302,
             MOVED = 301,
-            INTERNALERROR = 501
+            INTERNALERROR = 500,
+            NONE = -1
         };
 
         enum class RequestMethod {
@@ -39,27 +42,37 @@ namespace decoder {
 
         enum class ConnectionState {
             CLOSE,
-            KEEPALIVE
+            KEEPALIVE,
+            NONE
         };
 
         enum class TransferEncodings {
             CHUNKED,
             IDENTITY,
             GZIP,
-            COMPRESS
+            COMPRESS,
+            NONE
         };
 
         enum class CacheControls {
             NOSTORE,
             NOCACHE,
             MAXAGE,
-            MINFRESH
+            MINFRESH,
+            NONE
         };
 
         enum class AuthScheme {
             BASIC,
             BEARER,
-            DIGEST
+            DIGEST,
+            NONE
+        };
+
+        struct endpoint_reg {
+            enum RequestMethod method;
+            std::string endpoint;
+            endpoint_func* func;
         };
 
         struct Authorization {
@@ -70,39 +83,41 @@ namespace decoder {
         struct http_request {
 
             enum RequestMethod method;
-            std::string path;
+            std::string path = "";
             std::string version = "HTTP/1.1";
 
-            std::string host;
-            std::string user_agent;
+            std::string host = "";
+            std::string user_agent = "";
             std::vector<enum AcceptTypes> accepts;
             std::vector<enum CharsetTypes> charsets;
             std::vector<enum AcceptLanguage> languages;
-            enum TransferEncodings encoding;
+            enum TransferEncodings encoding = TransferEncodings::NONE;
             struct Authorization auth;
 
             int contentLength;
 
-            int keepAlive;
-            enum ConnectionState connection;
+            int keepAlive = -1;
+            enum ConnectionState connection = ConnectionState::NONE;
             std::string trailing = "\r\n";
 
             nlohmann::json js_body;
-            std::string url_encoded_body;
+            std::string url_encoded_body = "";
         };
 
         struct http_response {
 
             std::string version = "HTTP/1.1";
-            enum ResponseCode code;
-            std::string server;
+            enum ResponseCode code = ResponseCode::NONE;
+            std::string server = "";
 
-            std::string location;
+            std::string location = "";
 
             std::vector<enum CacheControls> cache;
 
-            enum ConnectionState connection;
+            enum ConnectionState connection = ConnectionState::NONE;
             std::string trailing = "\r\n";
+
+            nlohmann::json body;
         };
 
 
