@@ -17,7 +17,7 @@ namespace decoder {
 
             std::cout << "path: " << req.path << "\n";
             std::cout << "user-agent: " << req.user_agent << "\n";
-            std::cout << req.js_body.get<std::string>() << "\n";
+            std::cout << "name: " << req.js_body["name"].get<std::string>() << "\n";
 
         }
 

@@ -50,8 +50,6 @@ namespace decoder
                 std::string header_name = line[0];
                 std::string header_value = line[1];
 
-                std::cout << header_name << " | " << header_value << std::endl;
-
                 if (header_name == "Accepts")
                 {
 
@@ -110,6 +108,9 @@ namespace decoder
                     continue;
                 }
             }
+
+            std::cout << "http_body: " << http_body << "\n";
+
             if (!http_body.empty()) {
                 request.js_body = nlohmann::json::parse(http_body);
             }
