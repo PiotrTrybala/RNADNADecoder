@@ -15,14 +15,23 @@ namespace decoder {
             std::string piped_request = ss.str();
             struct http_request req = Parser::ParseRequest(piped_request);
 
-            std::cout << "path: " << req.path << "\n";
-            std::cout << "user-agent: " << req.user_agent << "\n";
-            std::cout << "name: " << req.js_body["name"].get<std::string>() << "\n";
+            struct http_response res;
+            endpoint_func func;
+
+            for (endpoint_reg& reg : this->registry) {
+                if (reg.method == req.method && req.path == req.path) {
+                    func = *reg.func; break;
+                }
+            }
+
+            res = func(res, req);
+
+            std::string prepared_response = Parser::PrepareResponse(res);
+
+            boost::asio::async_write(socket_, boost::asio::buffer(prepared_response), boost::bind(&TcpConnection::handle_response, shared_from_this(), res, boost::placeholders::_1));
 
         }
 
-        void TcpConnection::handle_response(const boost::system::error_code&) {
-
-        }
+        void TcpConnection::handle_response(struct http_response& res, const boost::system::error_code&) {}
     }
 }

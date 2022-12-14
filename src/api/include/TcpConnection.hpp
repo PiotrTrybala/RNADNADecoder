@@ -14,7 +14,7 @@ namespace decoder {
             private:
 
                 void handle_request(const boost::system::error_code&);
-                void handle_response(const boost::system::error_code&);
+                void handle_response(struct http_response&, const boost::system::error_code&);
 
                 TcpConnection(boost::asio::io_service& ios, v_reg& reg) : socket_(ios), registry(reg) {}
 

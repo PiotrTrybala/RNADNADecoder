@@ -6,12 +6,15 @@
 namespace decoder {
     namespace http {
 
+        using endpoint_func = std::function<struct http_response(struct http_response&, struct http_request&)>;
+
         enum class ResponseCode {
             OK = 200,
             NOTFOUND = 404,
             REDIRECT = 302,
             MOVED = 301,
-            INTERNALERROR = 500
+            INTERNALERROR = 500,
+            NONE = -1
         };
 
         enum class RequestMethod {
@@ -67,7 +70,6 @@ namespace decoder {
         };
 
         struct endpoint_reg {
-            using endpoint_func = std::function<struct http_response(struct http_request& req)>;
             enum RequestMethod method;
             std::string endpoint;
             endpoint_func* func;
@@ -105,7 +107,7 @@ namespace decoder {
         struct http_response {
 
             std::string version = "HTTP/1.1";
-            enum ResponseCode code;
+            enum ResponseCode code = ResponseCode::NONE;
             std::string server = "";
 
             std::string location = "";
