@@ -109,8 +109,6 @@ namespace decoder
                 }
             }
 
-            std::cout << "http_body: " << http_body << "\n";
-
             if (!http_body.empty()) {
                 request.js_body = nlohmann::json::parse(http_body);
             }

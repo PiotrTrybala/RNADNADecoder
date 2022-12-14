@@ -8,7 +8,6 @@
 namespace decoder {
     namespace http {
         using boost::asio::ip::tcp;
-        using endpoint_func = std::function<struct http_response(struct http_request& req)>;
 
         class HttpServer {
             private:
