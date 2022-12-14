@@ -3,10 +3,22 @@
 #include "engine/EngineTypes.hpp"
 #include "api/include/HttpParser.hpp"
 #include "api/include/HttpUtils.hpp"
+#include "api/include/HttpServer.hpp"
+#include "api/include/HttpTypes.hpp"
 #include <asio.hpp>
 
 using namespace decoder::engine;
 using namespace decoder::http;
+
+struct http_response PostIndex(struct http_response& res, struct http_request& req) {
+    res.code = ResponseCode::OK;
+    res.server = "My_Server:)";
+    res.connection = ConnectionState::KEEPALIVE;
+    res.body = R"(
+        "response": "I am feeling good today. It's snowing outside.
+    )";
+    return res;
+}
 
 auto main() -> int {
     // auto* engine = new DecoderEngine();
@@ -50,19 +62,28 @@ auto main() -> int {
 
     // struct http_request req1 = Parser::ParseRequest(post_http_request);
 
-    struct http_response res;
+    // struct http_response res;
 
-    res.code = ResponseCode::OK;
-    res.server = "Hello-Server";
-    res.cache.push_back(CacheControls::MINFRESH);
-    res.connection = ConnectionState::CLOSE;
-    res.body = {
-        {"name", "bartek"}
-    };
+    // res.code = ResponseCode::OK;
+    // res.server = "Hello-Server";
+    // res.cache.push_back(CacheControls::MINFRESH);
+    // res.connection = ConnectionState::CLOSE;
+    // res.body = {
+    //     {"name", "bartek"}
+    // };
 
-    std::string prepared = Parser::PrepareResponse(res);
+    // std::string prepared = Parser::PrepareResponse(res);
 
-    std::cout << prepared << std::endl;
+    // std::cout << prepared << std::endl;
+
+    boost::asio::io_context ctx;
+
+    HttpServer server {ctx, 3000};
+
+    server.get("/", PostIndex);
+
+    ctx.run();
+
 
     return 0;
 }
