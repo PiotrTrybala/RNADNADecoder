@@ -1,19 +1,18 @@
 #include "include/HttpServer.hpp"
-
+#include <iostream>
 namespace decoder
 {
     namespace http
     {
 
         void HttpServer::handle_connection(TcpConnection::pointer new_connection, const boost::system::error_code& error) {
-
             if (!error) {
                 new_connection->start();
             }
             start_accept();
         }
         void HttpServer::start_accept() {
-            TcpConnection::pointer new_connection = TcpConnection::create((boost::asio::io_service&) server_acceptor.get_executor().context());
+            TcpConnection::pointer new_connection = TcpConnection::create((boost::asio::io_service&) server_acceptor.get_executor().context(), this->registry);
 
             server_acceptor.async_accept(new_connection->socket(), boost::bind(&HttpServer::handle_connection, this, new_connection, boost::placeholders::_1));
         }
@@ -32,7 +31,7 @@ namespace decoder
             registry.push_back(reg);
         }
 
-        HttpServer::HttpServer(short port) : port(port), server_acceptor(ios, tcp::endpoint(tcp::v4(), port))
+        HttpServer::HttpServer(boost::asio::io_context& ctx, short port) : port(port), server_acceptor(ctx, tcp::endpoint(tcp::v4(), port))
         {
             start_accept();
         }
@@ -69,11 +68,11 @@ namespace decoder
         }
         void HttpServer::run()
         {
-            ios.run();
+            // ios.run();
         }
         void HttpServer::stop()
         {
-            ios.stop();
+            // ios.stop();
         }
 
     }

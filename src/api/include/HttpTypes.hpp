@@ -66,6 +66,13 @@ namespace decoder {
             NONE
         };
 
+        struct endpoint_reg {
+            using endpoint_func = std::function<struct http_response(struct http_request& req)>;
+            enum RequestMethod method;
+            std::string endpoint;
+            endpoint_func* func;
+        };
+
         struct Authorization {
             enum AuthScheme scheme;
             std::string authParams;

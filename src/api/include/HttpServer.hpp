@@ -10,12 +10,6 @@ namespace decoder {
         using boost::asio::ip::tcp;
         using endpoint_func = std::function<struct http_response(struct http_request& req)>;
 
-        struct endpoint_reg {
-            enum RequestMethod method;
-            std::string endpoint;
-            endpoint_func* func;
-        };
-
         class HttpServer {
             private:
 
@@ -27,7 +21,7 @@ namespace decoder {
                 void make_registry_entry(RequestMethod method, std::string endpoint, endpoint_func& func);
 
                 tcp::acceptor server_acceptor;
-                boost::asio::io_service ios;
+                // boost::asio::io_context ios;
 
                 void handle_connection(TcpConnection::pointer new_connection, const boost::system::error_code& error);
                 void start_accept();
@@ -36,7 +30,7 @@ namespace decoder {
             public:
 
                 HttpServer() = default;
-                HttpServer(short port);
+                HttpServer(boost::asio::io_context& ctx, short port);
                 HttpServer(const HttpServer& rhs);
                 HttpServer& operator=(const HttpServer& rhs);
                 ~HttpServer();
