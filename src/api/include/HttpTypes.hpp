@@ -14,6 +14,7 @@ namespace decoder {
             REDIRECT = 302,
             MOVED = 301,
             INTERNALERROR = 500,
+            BADREQUEST = 400,
             NONE = -1
         };
 
