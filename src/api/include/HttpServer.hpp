@@ -14,18 +14,13 @@ namespace decoder {
 
                 const short DEFAULT_PORT = 3000;
                 unsigned short port;
-
-                std::vector<struct endpoint_reg> registry;
-
-                void make_registry_entry(RequestMethod method, std::string endpoint, endpoint_func& func);
-
                 tcp::acceptor server_acceptor;
-                // boost::asio::io_context ios;
+                std::vector<struct EndpointReg> registry;
 
+
+                void make_registry_entry(RequestMethod method, std::string endpoint, EndpointFunction& func);
                 void handle_connection(TcpConnection::pointer new_connection, const boost::system::error_code& error);
                 void start_accept();
-
-
             public:
 
                 HttpServer() = default;
@@ -36,12 +31,12 @@ namespace decoder {
 
                 void request(std::string endpoint);
                 void response();
-                void get(std::string endpoint, endpoint_func func);
-                void post(std::string endpoint, endpoint_func func);
-                void put(std::string endpoint, endpoint_func func);
-                void del(std::string endpoint, endpoint_func func);
+                void get(std::string endpoint, EndpointFunction func);
+                void post(std::string endpoint, EndpointFunction func);
+                void put(std::string endpoint, EndpointFunction func);
+                void del(std::string endpoint, EndpointFunction func);
 
-                void redirect(std::string redirect_endpoint);
+                void redirect(std::string redirect_endpoint); // TODO(piotrek): implement redirection
                 void run();
                 void stop();
 

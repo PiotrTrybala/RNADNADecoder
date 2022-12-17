@@ -17,8 +17,8 @@ namespace decoder
             server_acceptor.async_accept(new_connection->socket(), boost::bind(&HttpServer::handle_connection, this, new_connection, boost::placeholders::_1));
         }
 
-        void HttpServer::make_registry_entry(RequestMethod method, std::string endpoint, endpoint_func& func) {
-            struct endpoint_reg reg;
+        void HttpServer::make_registry_entry(RequestMethod method, std::string endpoint, EndpointFunction& func) {
+            struct EndpointReg reg;
             reg.method = method;
             reg.endpoint = endpoint;
             reg.func = &func;
@@ -46,21 +46,21 @@ namespace decoder
         void HttpServer::request(std::string endpoint)
         {
         }
-        void HttpServer::get(std::string endpoint, endpoint_func func)
+        void HttpServer::get(std::string endpoint, EndpointFunction func)
         {
-            make_registry_entry(RequestMethod::GET, endpoint, func);
+            make_registry_entry(RequestMethod::GET, std::move(endpoint), func);
         }
-        void HttpServer::post(std::string endpoint, endpoint_func func)
+        void HttpServer::post(std::string endpoint, EndpointFunction func)
         {
-            make_registry_entry(RequestMethod::POST, endpoint, func);
+            make_registry_entry(RequestMethod::POST, std::move(endpoint), func);
         }
-        void HttpServer::put(std::string endpoint, endpoint_func func)
+        void HttpServer::put(std::string endpoint, EndpointFunction func)
         {
-            make_registry_entry(RequestMethod::PUT, endpoint, func);
+            make_registry_entry(RequestMethod::PUT, std::move(endpoint), func);
         }
-        void HttpServer::del(std::string endpoint, endpoint_func func)
+        void HttpServer::del(std::string endpoint, EndpointFunction func)
         {
-            make_registry_entry(RequestMethod::DELETE, endpoint, func);
+            make_registry_entry(RequestMethod::DELETE, std::move(endpoint), func);
         }
 
         void HttpServer::redirect(std::string redirect_endpoint)
