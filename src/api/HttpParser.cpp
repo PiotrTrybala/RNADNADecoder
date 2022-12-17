@@ -130,6 +130,8 @@ namespace decoder
                 ss << "404 Not Found";
             } else if (res.code == ResponseCode::REDIRECT) {
                 ss << "302 Found";
+            } else if (res.code == ResponseCode::BADREQUEST) {
+                ss << "400 Bad Request";
             }
             ss << res.trailing;
 

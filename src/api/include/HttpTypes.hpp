@@ -14,6 +14,7 @@ namespace decoder {
             REDIRECT = 302,
             MOVED = 301,
             INTERNALERROR = 500,
+            BADREQUEST = 400,
             NONE = -1
         };
 
@@ -69,6 +70,12 @@ namespace decoder {
             NONE
         };
 
+        enum class CORS {
+            ALL,
+            NONE,
+            SELECT
+        };
+
         struct endpoint_reg {
             enum RequestMethod method;
             std::string endpoint;
@@ -104,6 +111,8 @@ namespace decoder {
             std::string url_encoded_body = "";
         };
 
+
+
         struct http_response {
 
             std::string version = "HTTP/1.1";
@@ -115,6 +124,10 @@ namespace decoder {
             std::vector<enum CacheControls> cache;
 
             enum ConnectionState connection = ConnectionState::NONE;
+
+            enum CORS corsMode = CORS::NONE;
+            std::string corsAllow = "";
+
             std::string trailing = "\r\n";
 
             nlohmann::json body;

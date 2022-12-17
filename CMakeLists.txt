@@ -22,6 +22,8 @@ set(SOURCES
     engine/DecoderEngine.cpp
     api/HttpUtils.cpp
     api/HttpParser.cpp
+    api/HttpServer.cpp
+    api/TcpConnection.cpp
 )
 
 list(TRANSFORM SOURCES PREPEND ${PROJECT_SOURCE_DIR}/src/)
