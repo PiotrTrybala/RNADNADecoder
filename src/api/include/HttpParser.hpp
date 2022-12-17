@@ -7,8 +7,8 @@ namespace decoder {
     namespace http {
         class Parser {
             public:
-                static struct http_request ParseRequest(std::string& req);
-                static std::string PrepareResponse(struct http_response& res);
+                static struct HttpRequest ParseRequest(std::string& req);
+                static std::string PrepareResponse(struct HttpResponse& res);
         };
 
 

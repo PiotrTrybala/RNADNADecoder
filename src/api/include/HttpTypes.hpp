@@ -6,7 +6,7 @@
 namespace decoder {
     namespace http {
 
-        using endpoint_func = std::function<struct http_response(struct http_response&, struct http_request&)>;
+        using EndpointFunction = std::function<struct HttpResponse(struct HttpResponse&, struct HttpRequest&)>;
 
         enum class ResponseCode {
             OK = 200,
@@ -25,7 +25,7 @@ namespace decoder {
             DELETE
         };
 
-        enum class AcceptTypes {
+        enum class AcceptType {
             TEXTPLAIN,
             APPLICATIONJSON,
             TEXTHTML,
@@ -47,7 +47,7 @@ namespace decoder {
             NONE
         };
 
-        enum class TransferEncodings {
+        enum class TransferEncoding {
             CHUNKED,
             IDENTITY,
             GZIP,
@@ -55,7 +55,7 @@ namespace decoder {
             NONE
         };
 
-        enum class CacheControls {
+        enum class CacheControl {
             NOSTORE,
             NOCACHE,
             MAXAGE,
@@ -76,10 +76,10 @@ namespace decoder {
             SELECT
         };
 
-        struct endpoint_reg {
+        struct EndpointReg {
             enum RequestMethod method;
             std::string endpoint;
-            endpoint_func* func;
+            EndpointFunction* func;
         };
 
         struct Authorization {
@@ -87,7 +87,7 @@ namespace decoder {
             std::string authParams;
         };
 
-        struct http_request {
+        struct HttpRequest {
 
             enum RequestMethod method;
             std::string path = "";
@@ -95,10 +95,10 @@ namespace decoder {
 
             std::string host = "";
             std::string user_agent = "";
-            std::vector<enum AcceptTypes> accepts;
+            std::vector<enum AcceptType> accepts;
             std::vector<enum CharsetTypes> charsets;
             std::vector<enum AcceptLanguage> languages;
-            enum TransferEncodings encoding = TransferEncodings::NONE;
+            enum TransferEncoding encoding = TransferEncoding::NONE;
             struct Authorization auth;
 
             int contentLength;
@@ -113,7 +113,7 @@ namespace decoder {
 
 
 
-        struct http_response {
+        struct HttpResponse {
 
             std::string version = "HTTP/1.1";
             enum ResponseCode code = ResponseCode::NONE;
@@ -121,7 +121,7 @@ namespace decoder {
 
             std::string location = "";
 
-            std::vector<enum CacheControls> cache;
+            std::vector<enum CacheControl> cache;
 
             enum ConnectionState connection = ConnectionState::NONE;
 

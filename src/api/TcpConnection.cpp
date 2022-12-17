@@ -8,7 +8,7 @@ namespace decoder {
             boost::asio::async_read_until(socket_, request, "\r\n", boost::bind(&TcpConnection::handle_request, shared_from_this(), *this->registry, boost::placeholders::_1));
         }
 
-        void TcpConnection::handle_request(v_reg& reg, const boost::system::error_code&) {
+        void TcpConnection::handle_request(Registry& reg, const boost::system::error_code&) {
             std::cout << "reg handle: " << &reg << std::endl;
             std::istream is{&request};
             std::stringstream ss; ss << is.rdbuf();
@@ -16,15 +16,12 @@ namespace decoder {
 
             std::cout << "chrome req: " << piped_request << "\n";
 
-            struct http_request req = Parser::ParseRequest(piped_request);
-            struct http_response res;
-            endpoint_func func;
+            struct HttpRequest req = Parser::ParseRequest(piped_request);
+            struct HttpResponse res;
+            EndpointFunction func;
             bool endpoint_found = false;
-            std::cout << "1\n";
 
-            std::cout << "size of regs: " << reg.size() << "\n";
-
-            for (endpoint_reg r : reg) {
+            for (EndpointReg r : reg) {
                 std::cout << "endpoint: " << r.endpoint << "\n";
                 if (r.method == req.method && r.endpoint == req.path) {
                     endpoint_found = true;
