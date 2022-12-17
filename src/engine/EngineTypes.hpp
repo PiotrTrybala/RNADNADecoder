@@ -22,13 +22,12 @@ namespace decoder
 
         std::ostream &operator<<(std::ostream &os, const struct DecoderResult rhs);
 
-        struct DecoderResult
+        struct decoder_result
         {
-            time_t datetime;
             std::string result;
         };
 
-        struct DecoderInput
+        struct decoder_input
         {
             std::string input;
         };
