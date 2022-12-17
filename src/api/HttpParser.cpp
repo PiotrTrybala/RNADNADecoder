@@ -5,22 +5,22 @@ namespace decoder
 {
     namespace http
     {
-        auto Parser::ParseRequest(std::string &req) -> struct http_request
+        auto Parser::ParseRequest(std::string &req) -> struct HttpRequest
         {
 
-            struct http_request request;
+            struct HttpRequest request;
 
             std::string crlf = "\r\n";
 
             std::string http_body{};
 
             std::vector<std::string> http_lines = Utils::split(req, crlf);
-
             std::vector<std::string> method_header = Utils::split(http_lines[0], " ");
 
             std::string method = method_header[0];
             std::string path = method_header[1];
             std::string version = method_header[2]; // :)
+
             if (method == "GET")
             {
                 request.method = RequestMethod::GET;
@@ -55,11 +55,11 @@ namespace decoder
 
                     if (header_value == "application/json")
                     {
-                        request.accepts.push_back(AcceptTypes::APPLICATIONJSON);
+                        request.accepts.push_back(AcceptType::APPLICATIONJSON);
                     }
                     else if (header_value == "text/xml")
                     {
-                        request.accepts.push_back(AcceptTypes::TEXTXML);
+                        request.accepts.push_back(AcceptType::TEXTXML);
                     }
                     continue;
                 }
@@ -99,11 +99,11 @@ namespace decoder
                 {
                     if (header_value == "chucked")
                     {
-                        request.encoding = TransferEncodings::CHUNKED;
+                        request.encoding = TransferEncoding::CHUNKED;
                     }
                     else if (header_value == "compress")
                     {
-                        request.encoding = TransferEncodings::COMPRESS;
+                        request.encoding = TransferEncoding::COMPRESS;
                     }
                     continue;
                 }
@@ -114,7 +114,7 @@ namespace decoder
             }
             return request;
         }
-        auto Parser::PrepareResponse(struct http_response &res) -> std::string
+        auto Parser::PrepareResponse(struct HttpResponse &res) -> std::string
         {
             std::stringstream ss;
 
