@@ -21,15 +21,5 @@ namespace decoder
         };
 
         std::ostream &operator<<(std::ostream &os, const struct DecoderResult rhs);
-
-        struct decoder_result
-        {
-            std::string result;
-        };
-
-        struct decoder_input
-        {
-            std::string input;
-        };
     }
 }
