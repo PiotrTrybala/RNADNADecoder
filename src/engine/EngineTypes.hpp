@@ -20,6 +20,5 @@ namespace decoder
             struct compound_schema schema;
         };
 
-        std::ostream &operator<<(std::ostream &os, const struct DecoderResult rhs);
     }
 }

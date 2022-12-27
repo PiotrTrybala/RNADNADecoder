@@ -9,8 +9,8 @@ namespace decoder {
         class Utils {
 
             public:
-                static std::string trim(const std::string& s);
-                static std::vector<std::string> split(std::string& s, std::string delim);
+                static std::string Trim(const std::string& s);
+                static std::vector<std::string> Split(std::string& s, std::string delim);
         };
 
     }

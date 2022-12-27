@@ -5,22 +5,20 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include "TcpConnection.hpp"
+
+#define DEFAULT_PORT 3000
 namespace decoder {
     namespace http {
         using boost::asio::ip::tcp;
-
         class HttpServer {
             private:
-
-                const short DEFAULT_PORT = 3000;
                 unsigned short port;
                 tcp::acceptor server_acceptor;
-                std::vector<struct EndpointReg> registry;
+                std::vector<struct endpoint_reg> registry;
 
-
-                void make_registry_entry(RequestMethod method, std::string endpoint, EndpointFunction& func);
-                void handle_connection(TcpConnection::pointer new_connection, const boost::system::error_code& error);
-                void start_accept();
+                void MakeRegistryEntry(request_method method, std::string endpoint, endpoint_function& func);
+                void HandleConnection(decoder::http::pointer new_connection, const boost::system::error_code& error);
+                void StartAccept();
             public:
 
                 HttpServer() = default;
@@ -29,16 +27,14 @@ namespace decoder {
                 HttpServer& operator=(const HttpServer& rhs);
                 ~HttpServer();
 
-                void request(std::string endpoint);
-                void response();
-                void get(std::string endpoint, EndpointFunction func);
-                void post(std::string endpoint, EndpointFunction func);
-                void put(std::string endpoint, EndpointFunction func);
-                void del(std::string endpoint, EndpointFunction func);
+                void Get(std::string endpoint, endpoint_function func);
+                void Post(std::string endpoint, endpoint_function func);
+                void Put(std::string endpoint, endpoint_function func);
+                void Del(std::string endpoint, endpoint_function func);
 
-                void redirect(std::string redirect_endpoint); // TODO(piotrek): implement redirection
-                void run();
-                void stop();
+                void Redirect(std::string redirect_endpoint);
+                void Run();
+                void Stop();
 
         };
 

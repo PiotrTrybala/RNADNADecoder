@@ -6,9 +6,9 @@
 namespace decoder {
     namespace http {
 
-        using EndpointFunction = std::function<struct HttpResponse(struct HttpResponse&, struct HttpRequest&)>;
+        using endpoint_function = std::function<struct http_response(struct http_response&, struct http_request&)>;
 
-        enum class ResponseCode {
+        enum class response_code {
             OK = 200,
             NOTFOUND = 404,
             REDIRECT = 302,
@@ -18,36 +18,36 @@ namespace decoder {
             NONE = -1
         };
 
-        enum class RequestMethod {
+        enum class request_method {
             GET,
             POST,
             PUT,
             DELETE
         };
 
-        enum class AcceptType {
+        enum class accept_type {
             TEXTPLAIN,
             APPLICATIONJSON,
             TEXTHTML,
             TEXTXML
         };
 
-        enum class CharsetTypes {
+        enum class charset_type {
             UTF8
         };
 
-        enum class AcceptLanguage {
+        enum class accept_language {
             PL,
             ENUS
         };
 
-        enum class ConnectionState {
+        enum class connection_state {
             CLOSE,
             KEEPALIVE,
             NONE
         };
 
-        enum class TransferEncoding {
+        enum class transfer_encoding {
             CHUNKED,
             IDENTITY,
             GZIP,
@@ -55,7 +55,7 @@ namespace decoder {
             NONE
         };
 
-        enum class CacheControl {
+        enum class cache_control {
             NOSTORE,
             NOCACHE,
             MAXAGE,
@@ -63,48 +63,48 @@ namespace decoder {
             NONE
         };
 
-        enum class AuthScheme {
+        enum class auth_scheme {
             BASIC,
             BEARER,
             DIGEST,
             NONE
         };
 
-        enum class CORS {
+        enum class cors {
             ALL,
             NONE,
             SELECT
         };
 
-        struct EndpointReg {
-            enum RequestMethod method;
+        struct endpoint_reg {
+            enum request_method method;
             std::string endpoint;
-            EndpointFunction* func;
+            endpoint_function* func;
         };
 
-        struct Authorization {
-            enum AuthScheme scheme;
+        struct authorization {
+            enum auth_scheme scheme;
             std::string authParams;
         };
 
-        struct HttpRequest {
+        struct http_request {
 
-            enum RequestMethod method;
+            enum request_method method;
             std::string path = "";
             std::string version = "HTTP/1.1";
 
             std::string host = "";
             std::string user_agent = "";
-            std::vector<enum AcceptType> accepts;
-            std::vector<enum CharsetTypes> charsets;
-            std::vector<enum AcceptLanguage> languages;
-            enum TransferEncoding encoding = TransferEncoding::NONE;
-            struct Authorization auth;
+            std::vector<enum accept_type> accepts;
+            std::vector<enum charset_type> charsets;
+            std::vector<enum accept_language> languages;
+            enum transfer_encoding encoding = transfer_encoding::NONE;
+            struct authorization auth;
 
             int contentLength;
 
             int keepAlive = -1;
-            enum ConnectionState connection = ConnectionState::NONE;
+            enum connection_state connection = connection_state::NONE;
             std::string trailing = "\r\n";
 
             nlohmann::json js_body;
@@ -113,19 +113,19 @@ namespace decoder {
 
 
 
-        struct HttpResponse {
+        struct http_response {
 
             std::string version = "HTTP/1.1";
-            enum ResponseCode code = ResponseCode::NONE;
+            enum response_code code = response_code::NONE;
             std::string server = "";
 
             std::string location = "";
 
-            std::vector<enum CacheControl> cache;
+            std::vector<enum cache_control> cache;
 
-            enum ConnectionState connection = ConnectionState::NONE;
+            enum connection_state connection = connection_state::NONE;
 
-            enum CORS corsMode = CORS::NONE;
+            enum cors corsMode = cors::NONE;
             std::string corsAllow = "";
 
             std::string trailing = "\r\n";

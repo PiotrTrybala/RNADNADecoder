@@ -5,17 +5,17 @@ namespace decoder
 {
     namespace http
     {
-        auto Parser::ParseRequest(std::string &req) -> struct HttpRequest
+        auto Parser::ParseRequest(std::string &req) -> struct http_request
         {
 
-            struct HttpRequest request;
+            struct http_request request;
 
             std::string crlf = "\r\n";
 
             std::string http_body{};
 
-            std::vector<std::string> http_lines = Utils::split(req, crlf);
-            std::vector<std::string> method_header = Utils::split(http_lines[0], " ");
+            std::vector<std::string> http_lines = Utils::Split(req, crlf);
+            std::vector<std::string> method_header = Utils::Split(http_lines[0], " ");
 
             std::string method = method_header[0];
             std::string path = method_header[1];
@@ -23,29 +23,29 @@ namespace decoder
 
             if (method == "GET")
             {
-                request.method = RequestMethod::GET;
+                request.method = request_method::GET;
             }
             else if (method == "POST")
             {
-                request.method = RequestMethod::POST;
+                request.method = request_method::POST;
             }
             else if (method == "PUT")
             {
-                request.method = RequestMethod::PUT;
+                request.method = request_method::PUT;
             }
             else if (method == "DELETE")
             {
-                request.method = RequestMethod::DELETE;
+                request.method = request_method::DELETE;
             }
 
             request.path = path;
             request.version = version;
-            if (request.method != RequestMethod::GET)
+            if (request.method != request_method::GET)
                 http_body = http_lines[http_lines.size() - 1];
             for (int i = 1; i < http_lines.size() - 1; i++)
             {
                 if (http_lines[i].empty()) continue;
-                std::vector<std::string> line = Utils::split(http_lines[i], ": ");
+                std::vector<std::string> line = Utils::Split(http_lines[i], ": ");
 
                 std::string header_name = line[0];
                 std::string header_value = line[1];
@@ -55,11 +55,11 @@ namespace decoder
 
                     if (header_value == "application/json")
                     {
-                        request.accepts.push_back(AcceptType::APPLICATIONJSON);
+                        request.accepts.push_back(accept_type::APPLICATIONJSON);
                     }
                     else if (header_value == "text/xml")
                     {
-                        request.accepts.push_back(AcceptType::TEXTXML);
+                        request.accepts.push_back(accept_type::TEXTXML);
                     }
                     continue;
                 }
@@ -80,11 +80,11 @@ namespace decoder
                 {
                     if (header_value == "Keep-Alive")
                     {
-                        request.connection = ConnectionState::KEEPALIVE;
+                        request.connection = connection_state::KEEPALIVE;
                     }
                     else if (header_value == "Close")
                     {
-                        request.connection = ConnectionState::CLOSE;
+                        request.connection = connection_state::CLOSE;
                     }
                     continue;
                 }
@@ -99,11 +99,11 @@ namespace decoder
                 {
                     if (header_value == "chucked")
                     {
-                        request.encoding = TransferEncoding::CHUNKED;
+                        request.encoding = transfer_encoding::CHUNKED;
                     }
                     else if (header_value == "compress")
                     {
-                        request.encoding = TransferEncoding::COMPRESS;
+                        request.encoding = transfer_encoding::COMPRESS;
                     }
                     continue;
                 }
@@ -114,32 +114,32 @@ namespace decoder
             }
             return request;
         }
-        auto Parser::PrepareResponse(struct HttpResponse &res) -> std::string
+        auto Parser::PrepareResponse(struct http_response &res) -> std::string
         {
             std::stringstream ss;
 
             ss << res.version << " ";
 
-            if (res.code == ResponseCode::OK) {
+            if (res.code == response_code::OK) {
                 ss << "200 OK";
-            } else if (res.code == ResponseCode::MOVED) {
+            } else if (res.code == response_code::MOVED) {
                 ss << "301 Moved Permanently";
-            } else if (res.code == ResponseCode::INTERNALERROR) {
+            } else if (res.code == response_code::INTERNALERROR) {
                 ss << "500 Internal Server Error";
-            } else if (res.code == ResponseCode::NOTFOUND) {
+            } else if (res.code == response_code::NOTFOUND) {
                 ss << "404 Not Found";
-            } else if (res.code == ResponseCode::REDIRECT) {
+            } else if (res.code == response_code::REDIRECT) {
                 ss << "302 Found";
-            } else if (res.code == ResponseCode::BADREQUEST) {
+            } else if (res.code == response_code::BADREQUEST) {
                 ss << "400 Bad Request";
             }
             ss << res.trailing;
 
             if (!res.server.empty()) ss << "Server: " << res.server << res.trailing;
-            if (!res.location.empty() && res.code == ResponseCode::MOVED) ss << "Location: " << res.location << res.trailing;
-            if (res.connection != ConnectionState::NONE) {
+            if (!res.location.empty() && res.code == response_code::MOVED) ss << "Location: " << res.location << res.trailing;
+            if (res.connection != connection_state::NONE) {
                 ss << "Connection: ";
-                if (res.connection == ConnectionState::CLOSE) {
+                if (res.connection == connection_state::CLOSE) {
                     ss << "Close";
                 } else {
                     ss << "Keep-Alive";

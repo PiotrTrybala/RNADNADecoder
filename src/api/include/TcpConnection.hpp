@@ -9,29 +9,28 @@
 
 namespace decoder {
     namespace http {
+
         using boost::asio::ip::tcp;
-        using Registry = std::vector<struct EndpointReg>;
+        using registry = std::vector<struct endpoint_reg>;
+        using pointer = boost::shared_ptr<TcpConnection>;
         class TcpConnection : public boost::enable_shared_from_this<TcpConnection> {
             private:
 
-                void handle_request(Registry& reg, const boost::system::error_code&);
-                void handle_response(struct http_response&, const boost::system::error_code&);
+                void HandleRequest(registry& reg, const boost::system::error_code&);
+                void HandleResponse(struct http_response&, const boost::system::error_code&);
 
-                TcpConnection(boost::asio::io_service& ios, Registry& reg) : socket_(ios), registry(&reg) {}
-
-                tcp::socket socket_;
-
+                TcpConnection(boost::asio::io_service& ios, registry& reg) : socket(ios), registry(&reg) {}
+                tcp::socket socket;
                 boost::asio::streambuf request;
-
-                Registry* registry;
+                registry* registry;
 
             public:
-                typedef boost::shared_ptr<TcpConnection> pointer;
-                static pointer create(boost::asio::io_service& ios, Registry& reg) {
+
+                static pointer Create(boost::asio::io_service& ios, decoder::http::registry& reg) {
                     return pointer(new TcpConnection(ios, reg));
                 }
-                tcp::socket& socket() { return socket_; }
-                void start();
+                tcp::socket& GetSocket() { return socket; }
+                void Start();
         };
 
     }

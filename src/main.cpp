@@ -11,7 +11,7 @@
 using namespace decoder::engine;
 using namespace decoder::http;
 
-struct http_response PostEngineDecodeRNA(struct http_response& res, struct http_request& req) {
+struct HttpResponse PostEngineDecodeRNA(struct HttpResponse& res, struct HttpRequest& req) {
 
     auto* engine = new DecoderEngine();
 
@@ -39,6 +39,10 @@ struct http_response PostEngineDecodeRNA(struct http_response& res, struct http_
 }
 
 auto main() -> int {
+
+
+
+
     // auto* engine = new DecoderEngine();
     // struct DecoderInput input = {
     //     .input = "AAAUGAACGAAAAUCUGUUCGCUUCAUUCAUUGCCCCCACAAUCCUAGGCCUACCC"

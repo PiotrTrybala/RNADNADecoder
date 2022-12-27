@@ -4,11 +4,11 @@
 namespace decoder {
     namespace http {
 
-        void TcpConnection::start() {
-            boost::asio::async_read_until(socket_, request, "\r\n", boost::bind(&TcpConnection::handle_request, shared_from_this(), *this->registry, boost::placeholders::_1));
+        void TcpConnection::Start() {
+            boost::asio::async_read_until(socket, request, "\r\n", boost::bind(&TcpConnection::HandleRequest, shared_from_this(), *this->registry, boost::placeholders::_1));
         }
 
-        void TcpConnection::handle_request(Registry& reg, const boost::system::error_code&) {
+        void TcpConnection::HandleRequest(decoder::http::registry& reg, const boost::system::error_code&) {
             std::cout << "reg handle: " << &reg << std::endl;
             std::istream is{&request};
             std::stringstream ss; ss << is.rdbuf();
@@ -16,12 +16,12 @@ namespace decoder {
 
             std::cout << "chrome req: " << piped_request << "\n";
 
-            struct HttpRequest req = Parser::ParseRequest(piped_request);
-            struct HttpResponse res;
-            EndpointFunction func;
+            struct http_request req = Parser::ParseRequest(piped_request);
+            struct http_response res;
+            endpoint_function func;
             bool endpoint_found = false;
 
-            for (EndpointReg r : reg) {
+            for (struct endpoint_reg r : reg) {
                 std::cout << "endpoint: " << r.endpoint << "\n";
                 if (r.method == req.method && r.endpoint == req.path) {
                     endpoint_found = true;
@@ -31,16 +31,16 @@ namespace decoder {
             }
 
             if (!endpoint_found) {
-                res.code = ResponseCode::NOTFOUND;
+                res.code = response_code::NOTFOUND;
                 res.body = R"("response": "endpoint could not be found")";
                 return;
             } else {
                 res = func(res, req);
             }
             std::string prepared_response = Parser::PrepareResponse(res);
-            boost::asio::async_write(socket_, boost::asio::buffer(prepared_response), boost::bind(&TcpConnection::handle_response, shared_from_this(), res, boost::placeholders::_1));
+            boost::asio::async_write(socket, boost::asio::buffer(prepared_response), boost::bind(&TcpConnection::HandleResponse, shared_from_this(), res, boost::placeholders::_1));
         }
 
-        void TcpConnection::handle_response(struct http_response& res, const boost::system::error_code&) {}
+        void TcpConnection::HandleResponse(struct http_response& res, const boost::system::error_code&) {}
     }
 }

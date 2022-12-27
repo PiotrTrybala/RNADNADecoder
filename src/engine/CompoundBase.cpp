@@ -72,7 +72,7 @@ namespace decoder
             return schema;
         }
 
-        auto CompoundBase::getSymbol(const std::string &seq) -> std::string
+        auto CompoundBase::GetSymbol(const std::string &seq) -> std::string
         {
             if (this->compound_symbol_lookup.find(seq) == compound_symbol_lookup.end()) {
                 std::string error {""};
