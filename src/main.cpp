@@ -1,22 +1,40 @@
 #include <iostream>
+#include <asio.hpp>
+
 #include "engine/DecoderEngine.hpp"
 #include "engine/EngineTypes.hpp"
 #include "api/include/HttpParser.hpp"
 #include "api/include/HttpUtils.hpp"
 #include "api/include/HttpServer.hpp"
 #include "api/include/HttpTypes.hpp"
-#include <asio.hpp>
 
 using namespace decoder::engine;
 using namespace decoder::http;
 
-struct http_response PostIndex(struct http_response& res, struct http_request& req) {
-    res.code = ResponseCode::OK;
-    res.server = "My_Server:)";
-    res.connection = ConnectionState::KEEPALIVE;
-    res.body = R"(
-        "response": "I am feeling good today. It's snowing outside.
-    )";
+struct http_response PostEngineDecodeRNA(struct http_response& res, struct http_request& req) {
+
+    auto* engine = new DecoderEngine();
+
+    auto input = req.js_body["input"].get<std::string>();
+
+    if (input.empty() || input.size() == 0) {
+        res.code = ResponseCode::BADREQUEST;
+        res.body = R"(
+            "response": "input must be specified or cannot be length 0"
+        )";
+        return res;
+    }
+
+    struct DecoderInput decoder_input = { .input = input };
+    std::vector<struct DecoderResult> result = engine->GetResults(decoder_input);
+
+    res.connection = ConnectionState::CLOSE;
+
+    res.body = {
+        {"out1", result[0].result},
+        {"out2", result[1].result},
+        {"out3", result[2].result},
+    };
     return res;
 }
 
@@ -76,14 +94,9 @@ auto main() -> int {
 
     // std::cout << prepared << std::endl;
 
-    boost::asio::io_context ctx;
-
-    HttpServer server {ctx, 3000};
-
-    server.get("/", PostIndex);
-
-    ctx.run();
-
-
+    // boost::asio::io_context ctx;
+    // HttpServer server {ctx, 3000};
+    // server.post("/decode", PostEngineDecodeRNA);
+    // ctx.run();
     return 0;
 }
