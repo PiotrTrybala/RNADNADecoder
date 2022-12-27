@@ -8,6 +8,9 @@
 #include "api/include/HttpServer.hpp"
 #include "api/include/HttpTypes.hpp"
 
+#include "spdlog/spdlog.h"
+#include "spdlog/sinks/stdout_color_sinks.h"
+
 using namespace decoder::engine;
 using namespace decoder::http;
 
@@ -40,8 +43,8 @@ struct HttpResponse PostEngineDecodeRNA(struct HttpResponse& res, struct HttpReq
 
 auto main() -> int {
 
-
-
+    auto console = spdlog::stdout_color_mt("console");
+    auto err_logger = spdlog::stderr_color_mt("stderr");
 
     // auto* engine = new DecoderEngine();
     // struct DecoderInput input = {

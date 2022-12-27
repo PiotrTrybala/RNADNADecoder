@@ -27,6 +27,11 @@ namespace decoder
                 compound.name = start["name"].get<std::string>();
                 compound.symbol = start["symbol"].get<std::string>();
                 compound.schema = MakeCompoundSchema(start["schema"].get<std::string>());
+
+                #ifdef DEBUG_COMPOUNDBASE_PARSESCHEMA
+                    spdlog::get("console")->info("Start Compound:\nName: {0}\nSymbol: {1}\n", compound.name, compound.symbol);
+                #endif
+
                 start_compound = compound;
 
                 this->compound_symbol_lookup.insert({compound.schema.const_part, compound}); // TODO(piotrek): fix and add variadic part to add
@@ -39,6 +44,10 @@ namespace decoder
                 compound.symbol = stop["symbol"].get<std::string>();
                 compound.schema = MakeCompoundSchema(stop["schema"].get<std::string>());
 
+                #ifdef DEBUG_COMPOUNDBASE_PARSESCHEMA
+                    spdlog::get("console")->info("Stop Compound:\nName: {0}\nSymbol: {1}\n", compound.name, compound.symbol);
+                #endif
+
                 this->compound_symbol_lookup[compound.schema.const_part] = compound;
                 stop_compound.emplace_back(compound);
             }
@@ -49,6 +58,10 @@ namespace decoder
                 compound.name = comp["name"].get<std::string>();
                 compound.symbol = comp["symbol"].get<std::string>();
                 compound.schema = MakeCompoundSchema(comp["schema"].get<std::string>());
+
+                #ifdef DEBUG_COMPOUNDBASE_PARSESCHEMA
+                    spdlog::get("console")->info("Compound:\nName: {0}\nSymbol: {1}\n", compound.name, compound.symbol);
+                #endif
 
                 for (int i = 0; i < compound.schema.variadic_part.size(); i++) {
                     std::string lookup {compound.schema.const_part};

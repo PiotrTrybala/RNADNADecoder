@@ -12,6 +12,9 @@ namespace decoder {
             std::stringstream ss; ss << is.rdbuf();
             std::string piped_request = ss.str();
 
+            #ifdef DEBUG_TCPCONNECTION_HANDLEREQUEST
+                spdlog::get("console")->info("Got request: {}", piped_request);
+            #endif
 
             struct http_request req = Parser::ParseRequest(piped_request);
             struct http_response res;

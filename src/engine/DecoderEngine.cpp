@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "DecoderEngine.hpp"
+#include "spdlog/spdlog.h"
 
 namespace decoder
 {
@@ -34,8 +35,14 @@ namespace decoder
         }
         auto DecoderEngine::GetPatrialResult(const std::string input) -> std::string {
             std::string output{""}, raw_input {input};
+            spdlog::get("console")->info("Decoding sequence: {}", raw_input);
             for (int i = 0; i < raw_input.length(); i += 3) {
                 std::string seq { raw_input.substr(i, 3) };
+
+                #ifdef DEBUG_DECODERENGINE_GETPATRIALRESULT
+                    spdlog::get("console")->info("Decoding partial sequence: {}\n", seq);
+                #endif
+
                 output += base->GetSymbol(seq);
             }
             return output;
