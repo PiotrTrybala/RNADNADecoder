@@ -1,5 +1,8 @@
+
+#include <vector>
+#include <string>
+
 #include "include/HttpUtils.hpp"
-#include <iostream>
 
 namespace decoder {
     namespace http {

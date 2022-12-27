@@ -1,5 +1,7 @@
-#include "CompoundBase.hpp"
 #include <iostream>
+
+#include "CompoundBase.hpp"
+
 namespace decoder
 {
     namespace engine

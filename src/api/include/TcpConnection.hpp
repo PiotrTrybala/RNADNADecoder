@@ -1,11 +1,14 @@
+#pragma once
+
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
 #include <boost/shared_ptr.hpp>
-#include <boost/enable_shared_from_this.hpp>
-#include "HttpParser.hpp"
-#include <vector>
-#include "HttpTypes.hpp"
 #include <iostream>
+#include <boost/enable_shared_from_this.hpp>
+#include <vector>
+
+#include "HttpParser.hpp"
+#include "HttpTypes.hpp"
 
 namespace decoder {
     namespace http {

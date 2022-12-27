@@ -1,9 +1,12 @@
-#include "HttpParser.hpp"
-#include "HttpTypes.hpp"
+#pragma once
+
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/enable_shared_from_this.hpp>
+
+#include "HttpParser.hpp"
+#include "HttpTypes.hpp"
 #include "TcpConnection.hpp"
 
 #define DEFAULT_PORT 3000

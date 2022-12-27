@@ -1,5 +1,8 @@
+#pragma once
+
 #include "CompoundBase.hpp"
 #include "EngineTypes.hpp"
+
 #include <vector>
 
 namespace decoder {

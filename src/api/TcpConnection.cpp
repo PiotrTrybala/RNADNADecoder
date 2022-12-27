@@ -1,5 +1,4 @@
 #include "include/TcpConnection.hpp"
-#include <iostream>
 
 namespace decoder {
     namespace http {
@@ -9,12 +8,10 @@ namespace decoder {
         }
 
         void TcpConnection::HandleRequest(decoder::http::registry& reg, const boost::system::error_code&) {
-            std::cout << "reg handle: " << &reg << std::endl;
             std::istream is{&request};
             std::stringstream ss; ss << is.rdbuf();
             std::string piped_request = ss.str();
 
-            std::cout << "chrome req: " << piped_request << "\n";
 
             struct http_request req = Parser::ParseRequest(piped_request);
             struct http_response res;
@@ -25,7 +22,6 @@ namespace decoder {
                 std::cout << "endpoint: " << r.endpoint << "\n";
                 if (r.method == req.method && r.endpoint == req.path) {
                     endpoint_found = true;
-                    std::cout << "path: " << r.endpoint << ", " << r.func << std::endl;
                     func = *r.func; break;
                 }
             }

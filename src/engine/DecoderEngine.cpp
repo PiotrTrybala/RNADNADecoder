@@ -1,5 +1,7 @@
-#include "DecoderEngine.hpp"
+
 #include <iostream>
+
+#include "DecoderEngine.hpp"
 
 namespace decoder
 {
@@ -34,7 +36,7 @@ namespace decoder
             std::string output{""}, raw_input {input};
             for (int i = 0; i < raw_input.length(); i += 3) {
                 std::string seq { raw_input.substr(i, 3) };
-                output += base->getSymbol(seq);
+                output += base->GetSymbol(seq);
             }
             return output;
         }

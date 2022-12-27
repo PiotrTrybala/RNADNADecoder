@@ -1,13 +1,14 @@
 #pragma once
+
 #include <vector>
 #include <string>
-#include <cstring>
 #include <cctype>
-#include <unordered_map>
-#include "nlohmann/json.hpp"
+#include <cstring>
 #include <fstream>
+#include <unordered_map>
 
 #include "EngineTypes.hpp"
+#include "nlohmann/json.hpp"
 
 using nlohmann::json;
 

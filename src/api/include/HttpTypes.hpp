@@ -1,7 +1,9 @@
 #pragma once
+
 #include <string>
-#include "nlohmann/json.hpp"
 #include <vector>
+
+#include "nlohmann/json.hpp"
 
 namespace decoder {
     namespace http {

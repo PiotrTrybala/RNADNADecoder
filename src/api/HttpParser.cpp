@@ -1,6 +1,8 @@
-#include "include/HttpParser.hpp"
-#include <iostream>
 
+#include <string>
+#include <vector>
+
+#include "include/HttpParser.hpp"
 namespace decoder
 {
     namespace http
