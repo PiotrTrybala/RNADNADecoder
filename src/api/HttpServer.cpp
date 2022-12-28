@@ -1,5 +1,6 @@
 
 #include "include/HttpServer.hpp"
+#include "spdlog/spdlog.h"
 
 namespace decoder
 {
@@ -29,11 +30,41 @@ namespace decoder
                     return;
                 }
             }
+
+            #ifdef DEBUG_HTTPSERVER_MAKEREGISTRYENTRY
+
+                std::string smethod;
+
+                switch(reg.method) {
+                    case request_method::GET:
+                        smethod = "GET";
+                        break;
+                    case request_method::POST:
+                        smethod = "POST";
+                        break;
+                    case request_method::PUT:
+                        smethod = "PUT";
+                        break;
+                    case request_method::DELETE:
+                        smethod = "DELETE";
+                        break;
+                    default:
+                        break;
+                }
+
+
+                spdlog::get("console")->info("Created {} for {}", smethod, endpoint);
+            #endif
+
+
             registry.push_back(reg);
         }
 
         HttpServer::HttpServer(boost::asio::io_context& ctx, short port) : port(port), server_acceptor(ctx, tcp::endpoint(tcp::v4(), port))
         {
+            #ifdef DEBUG_HTTPSERVER_CONSTR
+                spdlog::get("console")->get("Serving http server on port {}", port);
+            #endif
             StartAccept();
         }
         HttpServer &HttpServer::operator=(const HttpServer &rhs)
