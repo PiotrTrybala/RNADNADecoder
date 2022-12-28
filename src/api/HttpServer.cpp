@@ -92,16 +92,10 @@ namespace decoder
             MakeRegistryEntry(request_method::DELETE, std::move(endpoint), func);
         }
 
-        void HttpServer::Redirect(std::string redirect_endpoint)
-        {
-        }
-        void HttpServer::Run()
-        {
-            // ios.run();
-        }
-        void HttpServer::Stop()
-        {
-            // ios.stop();
+        struct http_response Redirect(struct http_response res, std::string redirect_endpoint)  {
+            res.code = response_code::MOVED;
+            res.location = redirect_endpoint;
+            return res;
         }
 
     }
