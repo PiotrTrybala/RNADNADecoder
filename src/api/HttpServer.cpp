@@ -7,14 +7,14 @@ namespace decoder
     namespace http
     {
 
-        void HttpServer::HandleConnection(decoder::http::pointer new_connection, const boost::system::error_code& error) {
+        void HttpServer::HandleConnection(pointer new_connection, const boost::system::error_code& error) {
             if (!error) {
                 new_connection->Start();
             }
             StartAccept();
         }
         void HttpServer::StartAccept() {
-            decoder::http::pointer new_connection = TcpConnection::Create((boost::asio::io_service&) server_acceptor.get_executor().context(), this->registry);
+            pointer new_connection = TcpConnection::Create((boost::asio::io_service&) server_acceptor.get_executor().context(), this->registry);
 
             server_acceptor.async_accept(new_connection->GetSocket(), boost::bind(&HttpServer::HandleConnection, this, new_connection, boost::placeholders::_1));
         }

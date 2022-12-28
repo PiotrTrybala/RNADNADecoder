@@ -1,10 +1,11 @@
 #include "include/TcpConnection.hpp"
+#include "spdlog/spdlog.h"
 
 namespace decoder {
     namespace http {
 
         void TcpConnection::Start() {
-            boost::asio::async_read_until(socket, request, "\r\n", boost::bind(&TcpConnection::HandleRequest, shared_from_this(), *this->registry, boost::placeholders::_1));
+            boost::asio::async_read_until(socket, request, "\r\n", boost::bind(&TcpConnection::HandleRequest, shared_from_this(), *this->regstry, boost::placeholders::_1));
         }
 
         void TcpConnection::HandleRequest(decoder::http::registry& reg, const boost::system::error_code&) {
@@ -22,7 +23,6 @@ namespace decoder {
             bool endpoint_found = false;
 
             for (struct endpoint_reg r : reg) {
-                std::cout << "endpoint: " << r.endpoint << "\n";
                 if (r.method == req.method && r.endpoint == req.path) {
                     endpoint_found = true;
                     func = *r.func; break;
@@ -30,9 +30,11 @@ namespace decoder {
             }
 
             if (!endpoint_found) {
+                #ifdef DEBUG_TCPCONNECTION_HANDLEREQUEST
+                    spdlog::get("console")->info("Endpoint was not found: {}", req.path);
+                #endif
                 res.code = response_code::NOTFOUND;
-                res.body = R"("response": "endpoint could not be found")";
-                return;
+                res.body = R"({"response": "endpoint could not be found"})";
             } else {
                 res = func(res, req);
             }

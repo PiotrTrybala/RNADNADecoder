@@ -47,7 +47,6 @@ namespace decoder
 
                 output += base->GetSymbol(seq);
             }
-            std::cout << "partial result: " << output << std::endl;
             return output;
         }
     }

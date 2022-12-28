@@ -15,17 +15,17 @@ namespace decoder {
 
         using boost::asio::ip::tcp;
         using registry = std::vector<struct endpoint_reg>;
-        using pointer = boost::shared_ptr<TcpConnection>;
         class TcpConnection : public boost::enable_shared_from_this<TcpConnection> {
+            using pointer = boost::shared_ptr<TcpConnection>;
             private:
 
                 void HandleRequest(registry& reg, const boost::system::error_code&);
                 void HandleResponse(struct http_response&, const boost::system::error_code&);
 
-                TcpConnection(boost::asio::io_service& ios, registry& reg) : socket(ios), registry(&reg) {}
+                TcpConnection(boost::asio::io_service& ios, registry& reg) : socket(ios), regstry(&reg) {}
                 tcp::socket socket;
                 boost::asio::streambuf request;
-                registry* registry;
+                registry* regstry;
 
             public:
 

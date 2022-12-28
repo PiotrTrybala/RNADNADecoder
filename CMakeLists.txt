@@ -7,7 +7,10 @@ set(CMAKE_CXX_CLANG_TIDY "clang-tidy")
 include (scripts/clang-format.cmake)
 set(CMAKE_BUILD_TYPE Debug)
 
+add_definitions(-DDEBUG_TCPCONNECTION_HANDLEREQUEST)
+
 include_directories(${PROJECT_SOURCE_DIR}/lib/json/include/)
+include_directories(${PROJECT_SOURCE_DIR}/lib/spdlog/include/)
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/doctest)
 

@@ -18,9 +18,10 @@ namespace decoder {
                 unsigned short port;
                 tcp::acceptor server_acceptor;
                 std::vector<struct endpoint_reg> registry;
+                using pointer = boost::shared_ptr<TcpConnection>;
 
                 void MakeRegistryEntry(request_method method, std::string endpoint, endpoint_function& func);
-                void HandleConnection(decoder::http::pointer new_connection, const boost::system::error_code& error);
+                void HandleConnection(pointer new_connection, const boost::system::error_code& error);
                 void StartAccept();
             public:
 
