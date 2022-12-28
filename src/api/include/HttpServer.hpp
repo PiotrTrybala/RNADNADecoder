@@ -62,8 +62,6 @@ namespace decoder {
                  * @param redirect_endpoint specified location
                  */
                 struct http_response Redirect(struct http_response res, std::string redirect_endpoint);
-                void Run();
-                void Stop();
 
         };
 
