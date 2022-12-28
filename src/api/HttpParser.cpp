@@ -148,6 +148,18 @@ namespace decoder
                 }
             }
             ss << res.trailing;
+
+            switch(res.corsMode) {
+                case cors::ALL:
+                    ss << "Access-Control-Allow-Origin: *";
+                    break;
+                case cors::SELECT:
+                    if (!res.corsAllow.empty()) {
+                        ss << "Access-Control-Allow-Origin: " << res.corsAllow;
+                    }
+            }
+
+            ss << res.trailing;
             ss << res.trailing << res.body.dump();
             return ss.str();
         }
